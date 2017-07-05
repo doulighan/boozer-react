@@ -1,29 +1,7 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+.container {
+  height: 200vh !important;
 }
 
-#wrapper {
-  margin-right: 200px;
-}
-
-#nav-list {
-  float: right;
-   width: 200px;
-   margin-right: -200px;
-   background-color: #FFA;
-}
-
-#cocktail-details {
-  position: fixed;
-   width: 80%;
-   background-color: #CCF;
-}
-
-#cocktail-form {
-  position: fixed;
-  margin-top: 200px;
-  background-color: #CCF;
-
+.header {
+  text-align: center;
 }

@@ -1,15 +1,26 @@
 import React from 'react'
+import { Menu, Segment } from 'semantic-ui-react'
 
 class CocktailsContainer extends React.Component {
   constructor(props){
     super(props)
 
     this.state = {
+      activeItem: 'description',
       id: "",
       name: "",
       description: "", 
+      instructions: "",
+      source: "",
       proportions: []
     }
+  }
+
+  handleItemClick(e, name) {
+    e.preventDefault()
+    console.log(name.name)
+    this.setState({activeItem: name.name})
+    this.forceUpdate()
   }
 
   componentWillUpdate(){
@@ -30,19 +41,52 @@ class CocktailsContainer extends React.Component {
         id: data.id,
         name: data.name,
         description: data.description,
+        instructions: data.instructions,
+        source: data.source,
         proportions: data.proportions
+
     }))
   }
   componentWillMount() {
    this.fetchCocktail() 
   }
 
+  renderContent() {
+    if (this.state.activeItem === 'description') {
+      return (
+        <div>
+          <h1>{this.state.name}</h1>
+          <p>{this.state.description}</p>
+          <p>{this.state.source}</p>
+        </div> 
+      )
+    }
+    else if (this.state.activeItem === 'recipe') {
+      return (
+        <div>
+          <p>{this.state.instructions}</p>
+          <ul>{this.state.proportions.map( p => 
+            <div>
+              <p>{p.ingredient_name}</p>
+              <li>{p.amount}</li>
+            </div>
+          )}
+          </ul>
+        </div>
+      )
+    }
+  }
+
   render() {
     return(
       <div>
-        <h1>{this.state.name}</h1>
-        <h4>id: {this.state.id}</h4>
-        <p>{this.state.description}</p>
+      <Menu pointing secondary>
+        <Menu.Item name='description' active={this.state.activeItem === 'description'} onClick={this.handleItemClick.bind(this)} />
+        <Menu.Item name='recipe' active={this.state.activeItem === 'recipe'} onClick={this.handleItemClick.bind(this)} />
+     </Menu>
+      <div className="box">
+        {this.renderContent()}
+      </div>
       </div>
     )
   }

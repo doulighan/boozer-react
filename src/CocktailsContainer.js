@@ -8,13 +8,20 @@ import {
 import NavList from './NavList.js'
 import CocktailDetails from './CocktailDetails.js'
 import CocktailForm from './CocktailForm.js'
+import { Sidebar, Segment, Button, Menu, Image, Icon, Header, Grid, Row } from 'semantic-ui-react'
+import MainDivRouter from './MainDivRouter.js'
 
 class CocktailsContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      cocktails: []
+      cocktails: [],
+      active: false
     }
+  }
+  toggleVisibility() { 
+    this.setState({ active: !this.state.active })
+    console.log(this.state)
   }
 
   componentWillMount() {
@@ -28,20 +35,34 @@ class CocktailsContainer extends React.Component {
       .then(data => this.setState({cocktails: data}))
   }
 
+
+
   render () {
     return (
-        <div id="wrapper">
-          <div id="nav-list"> 
-            <NavList cocktails={this.state.cocktails} />
-          </div>
-          <div id="cocktail-details">
-            <Route path='/cocktails/:cocktailId' 
-            render={ props => { return(<CocktailDetails {...props} />)}} />
-          </div>
-          <div id='cocktail-form'>
-            <CocktailForm />
-          </div>
-        </div>
+
+      <div className="container">
+        <Segment>
+          <Header className="header" as='h2' inverted color='orange'>Boozer</Header>
+          <Button toggle active={this.state.active} onClick={this.toggleVisibility.bind(this)}>Show All</Button>
+          <Link to='/cocktails/new'><Button className="right" >New Cocktail</Button></Link>
+        </Segment>
+        <Sidebar.Pushable as={Segment}>
+          <Sidebar as={Menu} animation='push' width='thin' visible={this.state.active} icon='labeled' vertical inverted>
+
+              <NavList cocktails={this.state.cocktails} />
+
+          </Sidebar>
+          <Sidebar.Pusher>
+            <Segment basic size='medium' >
+              <div id="cocktail-details">
+
+                <MainDivRouter />
+               
+              </div>
+            </Segment>
+          </Sidebar.Pusher>
+        </Sidebar.Pushable>
+      </div>
     )
   }
 }

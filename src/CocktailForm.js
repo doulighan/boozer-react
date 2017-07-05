@@ -1,4 +1,5 @@
 import React from 'react'
+import { Form, Input, TextArea, Button } from 'semantic-ui-react'
 
 class CocktailForm extends React.Component {
   constructor(props) {
@@ -8,6 +9,7 @@ class CocktailForm extends React.Component {
       name: '',
       description: ''
     }
+
   }
 
   handleChange(e) {
@@ -19,34 +21,51 @@ class CocktailForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault()
     this.postCocktail()
+    
   }
 
   postCocktail() {
     console.log(this.state)
     const data = {
       method: 'POST',
-      header: {
+      headers: {
         'Content-Type':'application/json'
       },
-      cocktail: JSON.stringify(this.state)
+      body: JSON.stringify(this.state)
     }
-    console.log(data)
+    
 
     fetch('http://localhost:3000/api/v1/cocktails', data)
-
   }
 
 
 
   render () {
     return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
-        <input type="text" name="name" value={this.state.name} onChange={this.handleChange.bind(this)}/>
-        <input type="text" name="description" value={this.state.description} onChange={this.handleChange.bind(this)}/>
-        <button type="submit">Create</button>
-      </form>
+
+      <Form>
+         <Form.Group widths='equal'>
+           <Form.Field id='form-input-control-name' control={Input} label='Name:' placeholder='Name' />
+           <Form.Field id='form-input-control-source' control={Input} label='Source:' placeholder='Source' />
+         </Form.Group>
+         <Form.Field id='form-textarea-control-description' control={TextArea} label='Description' placeholder='Description' /> 
+         <Form.Field id='form-textarea-control-instructions' control={TextArea} label='Instructions' placeholder='Instructions' />
+         <Form.Field id='form-button-control-public' control={Button} content='Submit' />
+        </Form>
     )
   }
 }
 
 export default CocktailForm
+
+
+
+
+
+
+
+
+
+
+
+
